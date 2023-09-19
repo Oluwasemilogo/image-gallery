@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; 
 import image from "../Assets/signIn.svg";
 import { auth } from "./Firebase-config";
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
@@ -8,7 +9,7 @@ export const SignIn = () => {
   const [loginPassword, setLoginPassword] = useState("");
   const [user, setUser] = useState(null);
   const [error, setError] = useState("");
-
+  const navigate = useNavigate();
 
   onAuthStateChanged(auth, (currentUser) => {
     setUser(currentUser);
@@ -16,21 +17,28 @@ export const SignIn = () => {
 
   const logIn = async () => {
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        loginEmail,
-        loginPassword
-      );
-      const newUser = userCredential.user;
-      setUser(newUser);
-      setError("");
-      console.log("User logged in:", newUser);
+      if (loginEmail === "user@example.com" && loginPassword === "1Password") {
+        const userCredential = await signInWithEmailAndPassword(
+          auth,
+          loginEmail,
+          loginPassword
+        );
+        const newUser = userCredential.user;
+        setUser(newUser);
+        setError("");
+        console.log("User logged in:", newUser);
+        navigate("/gallery"); 
+      } else {
+        setError("Invalid email or password.");
+      }
     } catch (error) {
       setError(error.message);
       setUser(null);
       console.error("Login error:", error.message);
     }
   };
+
+
 
   return (
     <div className="flex overflow-hidden">

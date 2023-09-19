@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // Import useHistory
 import image from "../Assets/illustration.svg";
 import {
   createUserWithEmailAndPassword,
@@ -12,6 +13,7 @@ export const SignUp = () => {
   const [registerPassword, setRegisterPassword] = useState("");
   const [user, setUser] = useState(null);
   const [error, setError] = useState("");
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -24,21 +26,32 @@ export const SignUp = () => {
 
   const register = async () => {
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        registerEmail,
-        registerPassword
-      );
-      const newUser = userCredential.user;
-      setUser(newUser);
-      setError("");
-      console.log("User registered:", newUser);
+      if (
+        registerEmail === "user@example.com" &&
+        registerPassword === "1Password"
+      ) {
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          registerEmail,
+          registerPassword
+        );
+        const newUser = userCredential.user;
+        setUser(newUser);
+        setError("");
+        console.log("User registered:", newUser);
+       navigate("/gallery")
+      } else {
+        setError("Invalid email or password.");
+      }
     } catch (error) {
       setError(error.message);
-      setUser(null); // Set user to null on error
+      setUser(null);
       console.error("Registration error:", error.message);
     }
   };
+
+;
+
 
   return (
     <div className="flex overflow-hidden">
@@ -90,7 +103,9 @@ export const SignUp = () => {
               <p className="flex items-center gap-2 my-4 justify-center font-normal text-md">
                 Already have an account?
                 <Link to="/SignIn" className="">
-                  <p className="text-[#385A64] font-medium underline hover:text-lg hover:font-bold ">Sign In</p>
+                  <p className="text-[#385A64] font-medium underline hover:text-lg hover:font-bold ">
+                    Sign In
+                  </p>
                 </Link>
               </p>
               {error && <p className="text-red-500">{error}</p>}
