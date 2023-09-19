@@ -1,10 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import image from "../Assets/signIn.svg";
+import { auth } from "./Firebase-config";
+import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 
 export const SignIn = () => {
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+  const [user, setUser] = useState(null);
+  const [error, setError] = useState("");
+
+
+  onAuthStateChanged(auth, (currentUser) => {
+    setUser(currentUser);
+  });
+
+  const logIn = async () => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        loginEmail,
+        loginPassword
+      );
+      const newUser = userCredential.user;
+      setUser(newUser);
+      setError("");
+      console.log("User logged in:", newUser);
+    } catch (error) {
+      setError(error.message);
+      setUser(null);
+      console.error("Login error:", error.message);
+    }
+  };
+
   return (
     <div className="flex overflow-hidden">
-      <div className="w-1/2 h-screen ">
+      <div className="w-1/2 h-screen">
         <img src={image} alt="" className="object-contain h-[100%] w-[100%]" />
       </div>
       <div className="w-1/2 h-screen bg-white overflow-hidden">
@@ -23,7 +53,8 @@ export const SignIn = () => {
                 <input
                   type="email"
                   id="email"
-                  className={`w-full px-6 py-2 border trans outline-none rounded-full bg-[#E1E1E1]`}
+                  onChange={(e) => setLoginEmail(e.target.value)}
+                  className="w-full px-6 py-2 border trans outline-none rounded-full"
                 />
               </div>
               <div className="my-6">
@@ -36,16 +67,22 @@ export const SignIn = () => {
                 <input
                   type="password"
                   id="password"
-                  className={`w-full px-6 py-2 border outline-none rounded-full bg-[#E1E1E1]`}
+                  onChange={(e) => setLoginPassword(e.target.value)}
+                  className="w-full px-6 py-2 border outline-none rounded-full "
                 />
               </div>
 
               <button
-                type="submit"
+                type="button"
                 className="w-full py-2 px-4 bg-[#385A64] text-white rounded-full "
+                onClick={logIn}
               >
                 Sign In
               </button>
+              {error && <p className="text-red-500">{error}</p>}
+              {user && user.email && (
+                <p className="text-green-500">Logged in as: {user.email}</p>
+              )}
             </form>
           </div>
         </div>

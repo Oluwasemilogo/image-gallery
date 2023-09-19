@@ -1,11 +1,48 @@
-
-import React from "react";
+import React, { useState, useEffect } from "react";
 import image from "../Assets/illustration.svg";
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
+import { auth } from "./Firebase-config";
+import { Link } from "react-router-dom";
 
 export const SignUp = () => {
+  const [registerEmail, setRegisterEmail] = useState("");
+  const [registerPassword, setRegisterPassword] = useState("");
+  const [user, setUser] = useState(null);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      console.log("Auth state changed:", currentUser);
+      setUser(currentUser);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const register = async () => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        registerEmail,
+        registerPassword
+      );
+      const newUser = userCredential.user;
+      setUser(newUser);
+      setError("");
+      console.log("User registered:", newUser);
+    } catch (error) {
+      setError(error.message);
+      setUser(null); // Set user to null on error
+      console.error("Registration error:", error.message);
+    }
+  };
+
   return (
     <div className="flex overflow-hidden">
-      <div className="w-1/2 h-screen ">
+      <div className="w-1/2 h-screen">
         <img src={image} alt="" className="object-contain h-[100%] w-[100%]" />
       </div>
       <div className="w-1/2 h-screen bg-white overflow-hidden">
@@ -24,7 +61,8 @@ export const SignUp = () => {
                 <input
                   type="email"
                   id="email"
-                  className={`w-full px-6 py-2 border trans outline-none rounded-full bg-[#E1E1E1]`}
+                  onChange={(e) => setRegisterEmail(e.target.value)}
+                  className="w-full px-6 py-2 border trans outline-none rounded-full"
                 />
               </div>
               <div className="my-6">
@@ -37,16 +75,30 @@ export const SignUp = () => {
                 <input
                   type="password"
                   id="password"
-                  className={`w-full px-6 py-2 border outline-none rounded-full bg-[#E1E1E1]`}
+                  className="w-full px-6 py-2 border outline-none rounded-full"
+                  onChange={(e) => setRegisterPassword(e.target.value)}
                 />
               </div>
-
               <button
-                type="submit"
+                type="button"
                 className="w-full py-2 px-4 bg-[#385A64] text-white rounded-full "
+                onClick={register}
               >
                 Sign up
               </button>
+
+              <p className="flex items-center gap-2 my-4 justify-center font-normal text-md">
+                Already have an account?
+                <Link to="/SignIn" className="">
+                  <p className="text-[#385A64] font-medium underline hover:text-lg hover:font-bold ">Sign In</p>
+                </Link>
+              </p>
+              {error && <p className="text-red-500">{error}</p>}
+              {user && user.email && (
+                <p className="text-green-500 text-center">
+                  Logged in as: {user.email}
+                </p>
+              )}
             </form>
           </div>
         </div>
