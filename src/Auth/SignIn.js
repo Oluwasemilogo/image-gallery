@@ -7,13 +7,12 @@ import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 export const SignIn = () => {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
-  const [user, setUser] = useState(null);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(""); 
   const navigate = useNavigate();
 
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+
     });
   }, []);
 
@@ -25,14 +24,12 @@ export const SignIn = () => {
         loginPassword
       );
       const newUser = userCredential.user;
-      setUser(newUser);
       setError("");
       console.log("User logged in:", newUser);
 
       navigate("/gallery");
     } catch (error) {
       setError("Wrong credentials, please try again.");
-      setUser(null);
       console.error("Login error:", error.message);
     }
   };
