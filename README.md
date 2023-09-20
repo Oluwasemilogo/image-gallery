@@ -39,4 +39,3 @@ art.gallery web App is a fully functional and responsive image gallery applicati
 
 GitHub Repository Link - https://github.com/Oluwasemilogo/image-gallery
 
-Live Hosted Link - https://image-gallery-hng.netlify.app/
