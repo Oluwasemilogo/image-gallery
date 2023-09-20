@@ -1,9 +1,21 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState,useEffect } from "react";
 import ImageData from "./ImageData";
 import { useSearch } from "../SearchContext";
 import { useDrag, useDrop } from "react-dnd";
+import Spinner from "./Spinner";
 
-// Define a Card component
+const LoadingSpinner = () => {
+  return (
+    <div className="flex justify-center align-center">
+      <h1 className="text-center text-3xl font-bold text-[#385A64]">
+        Loading...
+      </h1>
+      <Spinner />
+    </div>
+  );
+};
+
+
 const Card = ({ image, index, moveImage }) => {
   const ref = useRef(null);
   const [, drop] = useDrop({
@@ -77,13 +89,21 @@ const Card = ({ image, index, moveImage }) => {
 
 export const GridDisplay = () => {
   const { searchQuery } = useSearch();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+   
+    setTimeout(() => {
+      setLoading(false); 
+    }, 2000); 
+  }, []);
 
   const filteredImages = ImageData.filter((image) => {
     const lowerCaseTags = image.tag.map((tag) => tag.toLowerCase());
     return lowerCaseTags.includes(searchQuery.toLowerCase());
   });
 
-  const [images, setImages] = useState(ImageData); // Initialize with ImageData
+  const [images, setImages] = useState(ImageData); 
   const moveImage = (dragIndex, hoverIndex) => {
     setImages((prevCards) => {
       const clonedCards = [...prevCards];
@@ -95,25 +115,29 @@ export const GridDisplay = () => {
 
   return (
     <div>
-      <div className="grid grid-cols-4 gap-8 px-4 my-8">
-        {searchQuery === ""
-          ? images.map((image, index) => (
-              <Card
-                key={index}
-                image={image}
-                index={index}
-                moveImage={moveImage}
-              />
-            ))
-          : filteredImages.map((image, index) => (
-              <Card
-                key={index}
-                image={image}
-                index={index}
-                moveImage={moveImage}
-              />
-            ))}
-      </div>
+      {loading ? ( 
+        <LoadingSpinner />
+      ) : (
+        <div className="grid grid-cols-1 mx-auto sm:grid-cols-2 md:grid-cols-4 gap-8 px-4 my-8">
+          {searchQuery === ""
+            ? images.map((image, index) => (
+                <Card
+                  key={index}
+                  image={image}
+                  index={index}
+                  moveImage={moveImage}
+                />
+              ))
+            : filteredImages.map((image, index) => (
+                <Card
+                  key={index}
+                  image={image}
+                  index={index}
+                  moveImage={moveImage}
+                />
+              ))}
+        </div>
+      )}
     </div>
   );
 };

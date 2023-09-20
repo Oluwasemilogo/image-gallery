@@ -1,70 +1,42 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+art.gallery web App is a fully functional and responsive image gallery application that showcases a collection of images in a visually appealing way. It includes authentication, image display, loading states, search functionality, and a drag-and-drop feature for rearranging images within the gallery.
 
-In the project directory, you can run:
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Authentication
+- Users can log in to the gallery page with the following credentials:
+  - **Username:** user@example.com
+  - **Password:** 1Password
+- Proper validation and error messages are displayed in the authentication form fields.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Image Display
+- The app presents a grid layout that showcases a collection of images with consistent spacing and sizing.
+- Each image is tagged for easy categorization and search.
 
-### `npm test`
+### Loading State
+- A loading state is implemented to display a skeleton loader or a loading spinner while images are being fetched. 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Search Functionality
+- Users can filter the image list based on tags added to the images using a search field.
 
-### `npm run build`
+### Drag-and-Drop
+- Authenticated users can effortlessly rearrange images within the gallery by dragging and dropping them.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### User-Friendly Feedback
+- Smooth animations and visual cues provide feedback during drag-and-drop interactions, enhancing the user experience.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Responsive Design
+- The gallery is designed to be responsive and functions seamlessly on various devices, including mobile phones, tablets, and desktops.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+## Technologies Used
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- React JS
+- Authentication with Firebase 
+- Tailwind CSS for Styling
+- React DnD (for drag-and-drop functionality)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+GitHub Repository Link - https://github.com/Oluwasemilogo/image-gallery
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Live Hosted Link - https://image-gallery-hng.netlify.app/

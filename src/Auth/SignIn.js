@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import image from "../Assets/signIn.svg";
 import { auth } from "./Firebase-config";
@@ -11,9 +11,11 @@ export const SignIn = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  onAuthStateChanged(auth, (currentUser) => {
-    setUser(currentUser);
-  });
+  useEffect(() => {
+    onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+  }, []);
 
   const logIn = async () => {
     try {
@@ -29,7 +31,7 @@ export const SignIn = () => {
 
       navigate("/gallery");
     } catch (error) {
-      setError(error.message);
+      setError("Wrong credentials, please try again.");
       setUser(null);
       console.error("Login error:", error.message);
     }
@@ -40,11 +42,16 @@ export const SignIn = () => {
       <div className="hidden md:block w-1/2 h-screen">
         <img src={image} alt="" className="object-contain h-[100%] w-[100%]" />
       </div>
-      <div className="w-full md:w-1/2 h-screen bg-white overflow-hidden">
+      <div className=" w-full sm:w-1/2 md:w-1/2 h-screen bg-white overflow-hidden">
         <div className="flex items-center justify-center h-full">
-          <div className="w-1/2 p-6">
-            <h1 className="my-6 text-3xl font-normal">Log In</h1>
-            <h4>Welcome back! please fill in your details.</h4>
+          <div className="">
+            <h1 className=" block sm:hidden md:hidden mb-12 md:mb-0 text-4xl font-bold text-[#385A64] text-center">
+              art.gallery
+            </h1>
+            <h1 className="my-6 text-3xl font-medium text-center text-[#385A64]">
+              Log In
+            </h1>
+            <h4>Welcome back! Please fill in your details.</h4>
             <form>
               <div className="my-6">
                 <label
@@ -56,7 +63,7 @@ export const SignIn = () => {
                 <input
                   type="email"
                   id="email"
-                  value={loginEmail} // Use value prop to bind input to state
+                  value={loginEmail}
                   onChange={(e) => setLoginEmail(e.target.value)}
                   className="w-full px-6 py-2 border trans outline-none rounded-full"
                 />
@@ -76,7 +83,11 @@ export const SignIn = () => {
                   className="w-full px-6 py-2 border outline-none rounded-full"
                 />
               </div>
-
+              {error && (
+                <div className="text-red-500 text-base my-6 font-normal text-center">
+                  {error}
+                </div>
+              )}
               <button
                 type="button"
                 className="w-full py-2 px-4 bg-[#385A64] text-white rounded-full"
@@ -84,10 +95,6 @@ export const SignIn = () => {
               >
                 Sign In
               </button>
-              {error && <p className="text-red-500">{error}</p>}
-              {user && user.email && (
-                <p className="text-green-500">Logged in as: {user.email}</p>
-              )}
             </form>
           </div>
         </div>
