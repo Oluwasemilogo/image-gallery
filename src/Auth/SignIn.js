@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import image from "../Assets/signIn.svg";
 import { auth } from "./Firebase-config";
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
@@ -17,20 +17,17 @@ export const SignIn = () => {
 
   const logIn = async () => {
     try {
-      if (loginEmail === "user@example.com" && loginPassword === "1Password") {
-        const userCredential = await signInWithEmailAndPassword(
-          auth,
-          loginEmail,
-          loginPassword
-        );
-        const newUser = userCredential.user;
-        setUser(newUser);
-        setError("");
-        console.log("User logged in:", newUser);
-        navigate("/gallery"); 
-      } else {
-        setError("Invalid email or password.");
-      }
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        loginEmail,
+        loginPassword
+      );
+      const newUser = userCredential.user;
+      setUser(newUser);
+      setError("");
+      console.log("User logged in:", newUser);
+
+      navigate("/gallery");
     } catch (error) {
       setError(error.message);
       setUser(null);
@@ -38,14 +35,12 @@ export const SignIn = () => {
     }
   };
 
-
-
   return (
-    <div className="flex overflow-hidden">
-      <div className="w-1/2 h-screen">
+    <div className="flex">
+      <div className="hidden md:block w-1/2 h-screen">
         <img src={image} alt="" className="object-contain h-[100%] w-[100%]" />
       </div>
-      <div className="w-1/2 h-screen bg-white overflow-hidden">
+      <div className="w-full md:w-1/2 h-screen bg-white overflow-hidden">
         <div className="flex items-center justify-center h-full">
           <div className="w-1/2 p-6">
             <h1 className="my-6 text-3xl font-normal">Log In</h1>
@@ -61,6 +56,7 @@ export const SignIn = () => {
                 <input
                   type="email"
                   id="email"
+                  value={loginEmail} // Use value prop to bind input to state
                   onChange={(e) => setLoginEmail(e.target.value)}
                   className="w-full px-6 py-2 border trans outline-none rounded-full"
                 />
@@ -75,14 +71,15 @@ export const SignIn = () => {
                 <input
                   type="password"
                   id="password"
+                  value={loginPassword}
                   onChange={(e) => setLoginPassword(e.target.value)}
-                  className="w-full px-6 py-2 border outline-none rounded-full "
+                  className="w-full px-6 py-2 border outline-none rounded-full"
                 />
               </div>
 
               <button
                 type="button"
-                className="w-full py-2 px-4 bg-[#385A64] text-white rounded-full "
+                className="w-full py-2 px-4 bg-[#385A64] text-white rounded-full"
                 onClick={logIn}
               >
                 Sign In

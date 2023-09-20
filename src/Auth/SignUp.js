@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // Import useHistory
+import { useNavigate } from "react-router-dom";
 import image from "../Assets/illustration.svg";
 import {
   createUserWithEmailAndPassword,
@@ -7,13 +7,14 @@ import {
 } from "firebase/auth";
 import { auth } from "./Firebase-config";
 import { Link } from "react-router-dom";
+import { Navigate } from "react-router-dom"; // Import Navigate
 
 export const SignUp = () => {
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
   const [user, setUser] = useState(null);
   const [error, setError] = useState("");
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -35,11 +36,13 @@ export const SignUp = () => {
           registerEmail,
           registerPassword
         );
-        const newUser = userCredential.user;
+       const newUser = userCredential.user;
         setUser(newUser);
         setError("");
         console.log("User registered:", newUser);
-       navigate("/gallery")
+
+        // Redirect to the gallery page upon successful registration
+        navigate("/gallery");
       } else {
         setError("Invalid email or password.");
       }
@@ -49,16 +52,13 @@ export const SignUp = () => {
       console.error("Registration error:", error.message);
     }
   };
-
-;
-
-
+  
   return (
-    <div className="flex overflow-hidden">
-      <div className="w-1/2 h-screen">
+    <div className="flex">
+      <div className="hidden md:block w-1/2 h-screen">
         <img src={image} alt="" className="object-contain h-[100%] w-[100%]" />
       </div>
-      <div className="w-1/2 h-screen bg-white overflow-hidden">
+      <div className="w-full md:w-1/2 h-screen bg-white overflow-hidden">
         <div className="flex items-center justify-center h-full">
           <div className="w-1/2 p-6">
             <h1 className="my-6 text-3xl font-normal">Create an account</h1>
@@ -109,11 +109,11 @@ export const SignUp = () => {
                 </Link>
               </p>
               {error && <p className="text-red-500">{error}</p>}
-              {user && user.email && (
+              {/* {user && user.email && (
                 <p className="text-green-500 text-center">
                   Logged in as: {user.email}
                 </p>
-              )}
+              )} */}
             </form>
           </div>
         </div>
